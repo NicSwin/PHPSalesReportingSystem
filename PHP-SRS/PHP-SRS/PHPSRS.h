@@ -43,6 +43,7 @@ private:
 	void viewProducts();
 	void addProduct();
 	void viewSales();
+	void viewWeeklySales();
 	void viewIndividualSales();
 	void recordSale();
 

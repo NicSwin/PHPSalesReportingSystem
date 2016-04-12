@@ -1,4 +1,5 @@
 #include "PHPSRS.h"
+#include <iostream>
 
 #define DBHOST "tcp://127.0.0.1:3306"
 #define USER "root"
