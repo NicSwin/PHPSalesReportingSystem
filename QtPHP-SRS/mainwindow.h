@@ -26,7 +26,7 @@ private:
     Ui::MainWindow *ui;
     PhpSrs* phpsrs;
 
-    QSqlRelationalTableModel* productTable = nullptr;
+    QSqlQueryModel* productTable = nullptr;
 };
 
 #endif // MAINWINDOW_H

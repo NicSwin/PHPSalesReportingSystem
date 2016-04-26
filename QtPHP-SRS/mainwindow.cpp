@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     phpsrs = new PhpSrs();
-    productTable = nullptr;
+    productTable = new QSqlQueryModel(ui->productTableView);
 }
 
 MainWindow::~MainWindow()
@@ -22,19 +22,17 @@ MainWindow::~MainWindow()
 bool MainWindow::connect(QString url, QString user, QString password, QString database)
 {
     bool temp = phpsrs->connect(url, user, password, database);
-    productTable = new QSqlRelationalTableModel(ui->productTableView, QSqlDatabase::database());
+    //productTable = new QSqlRelationalTableModel(ui->productTableView, QSqlDatabase::database());
 
     return temp;
 }
 
 void MainWindow::on_searchProductButton_clicked()
 {
-    QSqlDatabase defaultDB;
-
-    defaultDB = QSqlDatabase::database();
-    productTable->setTable("products");
-
-    productTable->select();
+    QSqlDatabase defaultDB = QSqlDatabase::database();
+    QString search = ui->productSearchBar->text();
+    qDebug() << search;
+    productTable->setQuery("SELECT * FROM `php-srs`.products WHERE `Name` LIKE '%" + search + "%';", defaultDB);
 
     ui->productTableView->setModel(productTable);
     ui->productTableView->show();
