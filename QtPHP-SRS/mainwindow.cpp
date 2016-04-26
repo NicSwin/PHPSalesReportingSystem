@@ -33,7 +33,6 @@ void MainWindow::on_searchProductButton_clicked()
 
     defaultDB = QSqlDatabase::database();
     productTable->setTable("products");
-    productTable->setFilter("Name Like %e%*");
 
     productTable->select();
 
