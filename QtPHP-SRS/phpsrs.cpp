@@ -27,3 +27,7 @@ bool PhpSrs::connect(QString url, QString user, QString password, QString databa
     }
 }
 
+bool PhpSrs::getProductsTable()
+{
+    return db->isValid();
+}

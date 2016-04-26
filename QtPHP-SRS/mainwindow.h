@@ -19,9 +19,14 @@ public:
 
     bool connect(QString url, QString user, QString password, QString database);
 
+private slots:
+    void on_searchProductButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     PhpSrs* phpsrs;
+
+    QSqlRelationalTableModel* productTable = nullptr;
 };
 
 #endif // MAINWINDOW_H
