@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "phpsrs.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -15,8 +17,11 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    bool connect(QString url, QString user, QString password, QString database);
+
 private:
     Ui::MainWindow *ui;
+    PhpSrs* phpsrs;
 };
 
 #endif // MAINWINDOW_H

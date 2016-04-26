@@ -8,6 +8,8 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
+#include "mainwindow.h"
+
 #define DBHOST "localhost"
 #define USER "root"
 #define PASSWORD "bird"
@@ -16,30 +18,26 @@
 #define NUMOFFSET 100
 #define COLNAME 200
 
-int main(int argc, const char *argv[])
+int main(int argc, char *argv[])
 {
-    // initiate url, user, password and database variables
+    QApplication a(argc, argv);
+
     const QString url(argc >= 2 ? argv[1] : DBHOST);
     const QString user(argc >= 3 ? argv[2] : USER);
     const QString password(argc >= 4 ? argv[3] : PASSWORD);
     const QString database(argc >= 5 ? argv[4] : DATABASE);
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName(url);
-    db.setDatabaseName(database);
-    db.setUserName(user);
-    db.setPassword(password);
-    int returnVal = db.open();
-
-    if (returnVal == 0) {
-        qDebug() << "Failed to connect to root mysql admin";
-        qDebug() << db.lastError().databaseText();
-        qDebug() << db.lastError().driverText();
+    MainWindow w;
+    if(w.connect(url, user, password, database)) {
+        w.show();
+        return a.exec();
     }
     else {
-        qDebug() << "Connected to " + database;
+        qDebug() << "Cannot connect, closing PHP-SRS";
+        return 0;
     }
 
+    /*
     QSqlQuery query;
     query.exec("SELECT * FROM products");
 
@@ -54,4 +52,5 @@ int main(int argc, const char *argv[])
     }
 
     return returnVal;
+    */
 }

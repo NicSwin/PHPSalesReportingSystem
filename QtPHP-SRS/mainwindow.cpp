@@ -6,9 +6,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    phpsrs = new PhpSrs();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+bool MainWindow::connect(QString url, QString user, QString password, QString database)
+{
+    return phpsrs->connect(url, user, password, database);
 }
