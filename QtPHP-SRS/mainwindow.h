@@ -18,9 +18,12 @@ public:
     ~MainWindow();
 
     bool connect(QString url, QString user, QString password, QString database);
+    void searchProduct(QString search = "");
 
 private slots:
     void on_searchProductButton_clicked();
+
+    void on_productTableView_clicked(const QModelIndex &index);
 
 private:
     Ui::MainWindow *ui;

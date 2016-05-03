@@ -24,16 +24,27 @@ bool MainWindow::connect(QString url, QString user, QString password, QString da
     bool temp = phpsrs->connect(url, user, password, database);
     //productTable = new QSqlRelationalTableModel(ui->productTableView, QSqlDatabase::database());
 
+    searchProduct();
     return temp;
 }
 
 void MainWindow::on_searchProductButton_clicked()
 {
-    QSqlDatabase defaultDB = QSqlDatabase::database();
     QString search = ui->productSearchBar->text();
-    qDebug() << search;
+    searchProduct(search);
+}
+
+void MainWindow::searchProduct(QString search)
+{
+    QSqlDatabase defaultDB = QSqlDatabase::database();
     productTable->setQuery("SELECT * FROM `php-srs`.products WHERE `Name` LIKE '%" + search + "%';", defaultDB);
 
     ui->productTableView->setModel(productTable);
     ui->productTableView->show();
+}
+
+void MainWindow::on_productTableView_clicked(const QModelIndex &index)
+{
+    qDebug() << index.column();
+    ui->productTableView->sortByColumn(index.column(), Qt::AscendingOrder);
 }
