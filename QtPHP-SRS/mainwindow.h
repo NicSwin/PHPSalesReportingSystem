@@ -24,7 +24,13 @@ public:
 
 private slots:
     void on_searchProductButton_clicked();
-    void on_tabWidget_tabBarClicked(int index);
+
+    void on_tabs_tabBarClicked(int index);
+
+    void on_productCSVButton_clicked();
+    void on_salesReceiptsCSVButton_clicked();
+    void on_individualItemSalesCSVButton_clicked();
+
 
 private:
     Ui::MainWindow *ui;

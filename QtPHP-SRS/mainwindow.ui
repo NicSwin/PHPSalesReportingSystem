@@ -28,7 +28,7 @@
         <item row="0" column="0">
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QTabWidget" name="tabWidget">
+           <widget class="QTabWidget" name="tabs">
             <property name="currentIndex">
              <number>0</number>
             </property>
@@ -46,7 +46,7 @@
                  </sizepolicy>
                 </property>
                 <attribute name="horizontalHeaderVisible">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </attribute>
                 <attribute name="horizontalHeaderCascadingSectionResizes">
                  <bool>true</bool>
@@ -84,7 +84,7 @@
                </layout>
               </item>
               <item row="2" column="0">
-               <widget class="QPushButton" name="pushButton">
+               <widget class="QPushButton" name="productCSVButton">
                 <property name="text">
                  <string>Create CSV report</string>
                 </property>
@@ -123,7 +123,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton_2">
+               <widget class="QPushButton" name="salesReceiptsCSVButton">
                 <property name="text">
                  <string>Create CSV report</string>
                 </property>
@@ -162,7 +162,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton_3">
+               <widget class="QPushButton" name="individualItemSalesCSVButton">
                 <property name="text">
                  <string>Create CSV report</string>
                 </property>

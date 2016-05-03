@@ -31,3 +31,41 @@ bool PhpSrs::getProductsTable()
 {
     return db->isValid();
 }
+
+bool PhpSrs::writeReport(QSqlQueryModel* model, QString fileName)
+{
+  QString csvTable;
+
+  for(int column = 0; column < model->columnCount(); column++) {
+     QString data = model->headerData( column, Qt::Horizontal ).toString();
+     csvTable += data;
+
+     if(column != model->columnCount()-1) {
+         csvTable += ",";
+     }
+     else {
+         csvTable += "\n";
+     }
+  }
+
+  for(int row = 0; row < model->rowCount(); row++) {
+    csvTable += "";
+    for(int column = 0; column < model->columnCount(); column++) {
+      QString data = model->data(model->index(row, column), Qt::DisplayRole).toString();
+      csvTable += data;
+
+      if(column != model->columnCount()-1) {
+          csvTable += ",";
+      }
+    }
+    csvTable += "\n";
+  }
+
+  QFile file( fileName );
+  if ( file.open(QIODevice::ReadWrite) )  {
+      QTextStream stream( &file );
+      stream << csvTable;
+  }
+
+  return true;
+}

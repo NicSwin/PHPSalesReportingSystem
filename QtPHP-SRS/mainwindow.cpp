@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QDateTime>
 #include <QSqlRecord>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -19,6 +20,8 @@ MainWindow::~MainWindow()
     delete ui;
     delete phpsrs;
     delete productTable;
+    delete saleReceiptTable;
+    delete individualItemSalesTable;
 }
 
 bool MainWindow::connect(QString url, QString user, QString password, QString database)
@@ -80,14 +83,15 @@ void MainWindow::searchSaleReceipt()
 
 void MainWindow::searchIndiviualItemSales()
 {
-    individualItemSalesTable->setQuery("SELECT ids.SaleID, p.Name, ids.Quanity FROM individual_sale ids INNER JOIN products p ON ids.ProductID = p.ProductID;");
+    QString query = "SELECT ids.SaleID, p.Name, ids.Quanity FROM individual_sale ids INNER JOIN products p ON ids.ProductID = p.ProductID;";
+    individualItemSalesTable->setQuery(query);
 
     ui->individualItemSalesTable->setModel(individualItemSalesTable);
     ui->individualItemSalesTable->horizontalHeader()->show();
     ui->individualItemSalesTable->show();
 }
 
-void MainWindow::on_tabWidget_tabBarClicked(int index)
+void MainWindow::on_tabs_tabBarClicked(int index)
 {
     switch(index) {
     case 0:
@@ -100,4 +104,35 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
         searchIndiviualItemSales();
         break;
     }
+}
+
+void MainWindow::on_productCSVButton_clicked()
+{
+    QString fileName( "Product_report_" );
+    const QDateTime now = QDateTime::currentDateTime();
+    const QString timestamp = now.toString(QLatin1String("yyyy_MM_dd_hh-mm-ss"));
+    fileName += timestamp + ".txt";
+
+    phpsrs->writeReport(productTable, fileName);
+}
+
+
+void MainWindow::on_salesReceiptsCSVButton_clicked()
+{
+    QString fileName( "Sales_report_" );
+    const QDateTime now = QDateTime::currentDateTime();
+    const QString timestamp = now.toString(QLatin1String("yyyy_MM_dd_hh-mm-ss"));
+    fileName += timestamp + ".txt";
+
+    phpsrs->writeReport(saleReceiptTable, fileName);
+}
+
+void MainWindow::on_individualItemSalesCSVButton_clicked()
+{
+    QString fileName( "Item_sales_report_" );
+    const QDateTime now = QDateTime::currentDateTime();
+    const QString timestamp = now.toString(QLatin1String("yyyy_MM_dd_hh-mm-ss"));
+    fileName += timestamp + ".txt";
+
+    phpsrs->writeReport(individualItemSalesTable, fileName);
 }

@@ -10,19 +10,23 @@
 #include <QSqlRelationalTableModel>
 #include <QTableView>
 #include <QSqlTableModel>
+#include <QFile>
+#include <QTextStream>
 
 class PhpSrs
 {    
-private:
-    QSqlDatabase* db = nullptr;
-    QSqlRelationalTableModel* model = nullptr;
-
-
 public:
     PhpSrs();
     bool connect(QString url, QString user, QString password, QString database);
 
     bool getProductsTable();
+    bool writeReport(QSqlQueryModel* model, QString fileName);
+private:
+    QSqlDatabase* db = nullptr;
+    QSqlRelationalTableModel* model = nullptr;
+
+
+
 };
 
 #endif // PHPSRS_H
