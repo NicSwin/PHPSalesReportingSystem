@@ -32,6 +32,8 @@ private slots:
     void on_individualItemSalesCSVButton_clicked();
 
 
+    void on_addProductButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     PhpSrs* phpsrs;

@@ -3,6 +3,7 @@
 
 #include <QDateTime>
 #include <QSqlRecord>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -135,4 +136,32 @@ void MainWindow::on_individualItemSalesCSVButton_clicked()
     fileName += timestamp + ".txt";
 
     phpsrs->writeReport(individualItemSalesTable, fileName);
+}
+
+void MainWindow::on_addProductButton_clicked()
+{
+    QSqlDatabase defaultDB = QSqlDatabase::database();
+
+    QSqlQuery query(defaultDB);
+    query.prepare("INSERT INTO `php-srs`.Products (Name, Price, Stock) VALUES (?, ?, ?)");
+    query.addBindValue( ui->productNameEdit->text(), QSql::Out);
+    query.addBindValue( ui->productPriceEdit->text(), QSql::Out);
+    query.addBindValue( ui->initialStockEdit->text(), QSql::Out);
+
+    QMessageBox msgBox;
+
+
+    if( query.exec() ) {
+        msgBox.setText(ui->productNameEdit->text()+ " has been added.");
+        msgBox.exec();
+        ui->productNameEdit->setText("");
+        ui->productPriceEdit->setText("");
+        ui->initialStockEdit->setText("");
+    }
+    else {
+        msgBox.setText("Error!\n" + query.lastError().text());
+        msgBox.exec();
+    }
+
+    //productTable->setQuery(query.executedQuery());
 }
