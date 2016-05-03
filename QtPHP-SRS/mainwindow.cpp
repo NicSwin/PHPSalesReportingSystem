@@ -165,3 +165,86 @@ void MainWindow::on_addProductButton_clicked()
 
     //productTable->setQuery(query.executedQuery());
 }
+
+void MainWindow::on_recordSaleButton_clicked()
+{
+    QSqlDatabase defaultDB = QSqlDatabase::database();
+
+    QSqlQuery insertSale(defaultDB);
+
+    insertSale.prepare("INSERT INTO sales_record (SalePrice) VALUES (?);");
+    insertSale.addBindValue(ui->totalPriceEdit->text());
+    insertSale.exec();
+
+    QString transactionID = insertSale.lastInsertId().toString();
+    bool soldOne = false;
+
+    if(ui->IDp1->text() != "") {
+        sellItem(ui->IDp1->text(), ui->p1Quanity->value(), transactionID);
+        soldOne = true;
+    }
+    if(ui->IDp2->text() != "") {
+        sellItem(ui->IDp2->text(), ui->p2Quanity->value(), transactionID);
+        soldOne = true;
+    }
+    if(ui->IDp3->text() != "") {
+        sellItem(ui->IDp3->text(), ui->p3Quanity->value(), transactionID);
+        soldOne = true;
+    }
+    if(ui->IDp4->text() != "") {
+        sellItem(ui->IDp4->text(), ui->p4Quanity->value(), transactionID);
+        soldOne = true;
+    }
+    if(ui->IDp5->text() != "") {
+        sellItem(ui->IDp4->text(), ui->p5Quanity->value(), transactionID);
+        soldOne = true;
+    }
+
+    QMessageBox msgBox;
+    if(soldOne) {
+        QString msg = "Sale recorded! ID: " + transactionID;
+        msgBox.setText(msg);
+        msgBox.exec();
+
+        ui->IDp1->setText("");
+        ui->IDp2->setText("");
+        ui->IDp3->setText("");
+        ui->IDp4->setText("");
+        ui->IDp5->setText("");
+
+        ui->p1Quanity->setValue(0);
+        ui->p2Quanity->setValue(0);
+        ui->p3Quanity->setValue(0);
+        ui->p4Quanity->setValue(0);
+        ui->p5Quanity->setValue(0);
+
+        ui->totalPriceEdit->setText("");
+    }
+    else {
+        msgBox.setText("You need to enter at least 1 product to make a sale.");
+        msgBox.exec();
+    }
+
+}
+
+bool MainWindow::sellItem(QString itemID, int itemQuanity, QString transactionID) {
+    // Item 1
+    QSqlDatabase defaultDB = QSqlDatabase::database();
+    QSqlQuery item1(defaultDB);
+    item1.prepare("INSERT INTO individual_sale (SaleID, ProductID, Quanity) VALUES (?, ?, ?);"
+                  "UPDATE products SET stock = stock - ? WHERE ProductID = ?;");
+    item1.addBindValue(transactionID);
+    item1.addBindValue(itemID);
+    item1.addBindValue(itemQuanity);
+    item1.addBindValue(itemQuanity);
+    item1.addBindValue(itemID);
+
+    if( !item1.exec() ) {
+        QMessageBox msgBox;
+        msgBox.setText("Error!\n" + item1.lastError().text());
+        msgBox.exec();
+        return false;
+    }
+
+    return true;
+}

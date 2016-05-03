@@ -22,6 +22,7 @@ public:
     void searchSaleReceipt();
     void searchIndiviualItemSales();
 
+    bool sellItem(QString itemID, int itemQuanity, QString transactionID);
 private slots:
     void on_searchProductButton_clicked();
 
@@ -31,8 +32,8 @@ private slots:
     void on_salesReceiptsCSVButton_clicked();
     void on_individualItemSalesCSVButton_clicked();
 
-
     void on_addProductButton_clicked();
+    void on_recordSaleButton_clicked();
 
 private:
     Ui::MainWindow *ui;

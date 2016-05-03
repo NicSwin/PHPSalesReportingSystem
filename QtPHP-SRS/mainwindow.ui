@@ -184,16 +184,87 @@
         <item>
          <widget class="QTabWidget" name="FormTabs">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_6">
            <attribute name="title">
-            <string>RecordSale</string>
+            <string>Record sale</string>
            </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <layout class="QGridLayout" name="gridLayout_5">
+              <item row="2" column="0">
+               <widget class="QSpinBox" name="p1Quanity"/>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_6">
+                <property name="text">
+                 <string>Quantity</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="label_5">
+                <property name="text">
+                 <string>ProductID</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="IDp1"/>
+              </item>
+              <item row="3" column="0">
+               <widget class="QSpinBox" name="p2Quanity"/>
+              </item>
+              <item row="4" column="0">
+               <widget class="QSpinBox" name="p3Quanity"/>
+              </item>
+              <item row="5" column="0">
+               <widget class="QSpinBox" name="p4Quanity"/>
+              </item>
+              <item row="6" column="0">
+               <widget class="QSpinBox" name="p5Quanity"/>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLineEdit" name="IDp2"/>
+              </item>
+              <item row="4" column="1">
+               <widget class="QLineEdit" name="IDp3"/>
+              </item>
+              <item row="5" column="1">
+               <widget class="QLineEdit" name="IDp4"/>
+              </item>
+              <item row="6" column="1">
+               <widget class="QLineEdit" name="IDp5"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QLabel" name="label_7">
+                <property name="text">
+                 <string>TotalPrice</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="totalPriceEdit"/>
+              </item>
+              <item>
+               <widget class="QPushButton" name="recordSaleButton">
+                <property name="text">
+                 <string>Record sale</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="tab_7">
            <attribute name="title">
-            <string>AddProduct</string>
+            <string>Add product</string>
            </attribute>
            <widget class="QWidget" name="formLayoutWidget">
             <property name="geometry">
