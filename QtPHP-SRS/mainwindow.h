@@ -19,17 +19,20 @@ public:
 
     bool connect(QString url, QString user, QString password, QString database);
     void searchProduct(QString search = "");
+    void searchSaleReceipt();
+    void searchIndiviualItemSales();
 
 private slots:
     void on_searchProductButton_clicked();
-
-    void on_productTableView_clicked(const QModelIndex &index);
+    void on_tabWidget_tabBarClicked(int index);
 
 private:
     Ui::MainWindow *ui;
     PhpSrs* phpsrs;
 
     QSqlQueryModel* productTable = nullptr;
+    QSqlQueryModel* saleReceiptTable = nullptr;
+    QSqlQueryModel* individualItemSalesTable = nullptr;
 };
 
 #endif // MAINWINDOW_H
