@@ -86,6 +86,7 @@ void PhpSrs::menu()
 			"3: View sale transactions." << std::endl <<
 			"4: View individual sales." << std::endl <<
 			"5: Record sale." << std::endl <<
+			"6: View last week's sales report." << std::endl <<
 			"------------------------------" << std::endl <<
 			"9: Quit" << std::endl <<
 			"> ";
@@ -106,6 +107,9 @@ void PhpSrs::menu()
 		}
 		else if (termninalInput == "5") {
 			recordSale();
+		}
+		else if (termninalInput == "6") {
+			viewWeeklySales();
 		}
 		else if (termninalInput == "9") {
 			running = false;
@@ -176,6 +180,18 @@ void PhpSrs::viewIndividualSales()
 {
 	stmt = con->createStatement();
 	res = stmt->executeQuery("SELECT ids.SaleID, p.Name, ids.Quanity FROM individual_sale ids INNER JOIN products p ON ids.ProductID = p.ProductID;");
+
+	retrieveDataAndPrint(res);
+	requestEnter();
+}
+
+void PhpSrs::viewWeeklySales()
+{
+	stmt = con->createStatement();
+	
+	res = stmt->executeQuery("SELECT * FROM sales_record WHERE DateTime >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY AND DateTime < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY");
+
+	//res = stmt->executeQuery("SELECT * FROM sales_record WHERE DateTime BETWEEN date_sub(now(), INTERVAL 1 WEEK) AND now()");
 
 	retrieveDataAndPrint(res);
 	requestEnter();
