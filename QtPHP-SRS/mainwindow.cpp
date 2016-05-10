@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QString>
 #include <QDateTime>
 #include <QSqlRecord>
 #include <QMessageBox>
@@ -182,7 +183,13 @@ void MainWindow::on_recordSaleButton_clicked()
 
     insertSale.prepare("INSERT INTO sales_record (SalePrice) VALUES (?);");
     insertSale.addBindValue(totalPrice);
-    insertSale.exec();
+
+    if( !insertSale.exec() ) {
+        QMessageBox msgBox;
+        msgBox.setText("Error!\nPlease make sure total price is in decimal format.");
+        msgBox.exec();
+        return;
+    }
 
     QString transactionID = insertSale.lastInsertId().toString();
 
@@ -240,54 +247,6 @@ void MainWindow::on_recordSaleButton_clicked()
         msgBox.setText("You need to enter at least 1 product to make a sale.");
         msgBox.exec();
     }
-
-    /*if(ui->IDp1->text() != "") {
-        sellItem(ui->IDp1->text(), ui->p1Quanity->value(), transactionID);
-        soldOne = true;
-    }
-    if(ui->IDp2->text() != "") {
-        sellItem(ui->IDp2->text(), ui->p2Quanity->value(), transactionID);
-        soldOne = true;
-    }
-    if(ui->IDp3->text() != "") {
-        sellItem(ui->IDp3->text(), ui->p3Quanity->value(), transactionID);
-        soldOne = true;
-    }
-    if(ui->IDp4->text() != "") {
-        sellItem(ui->IDp4->text(), ui->p4Quanity->value(), transactionID);
-        soldOne = true;
-    }
-    if(ui->IDp5->text() != "") {
-        sellItem(ui->IDp4->text(), ui->p5Quanity->value(), transactionID);
-        soldOne = true;
-    }
-
-    QMessageBox msgBox;
-    if(soldOne) {
-        QString msg = "Sale recorded! ID: " + transactionID;
-        msgBox.setText(msg);
-        msgBox.exec();
-
-        //ui->IDp1->setText("");
-        ui->IDp2->setText("");
-        ui->IDp3->setText("");
-        ui->IDp4->setText("");
-        ui->IDp5->setText("");
-
-        ui->p1Quanity->setValue(0);
-        ui->p2Quanity->setValue(0);
-        ui->p3Quanity->setValue(0);
-        ui->p4Quanity->setValue(0);
-        ui->p5Quanity->setValue(0);
-
-        ui->totalPriceEdit->setText("");
-    }
-    else {
-        msgBox.setText("You need to enter at least 1 product to make a sale.");
-        msgBox.exec();
-    }
-    */
-
 }
 
 bool MainWindow::sellItem(QComboBox* combo, QString transactionID, int quanity) {
@@ -317,6 +276,28 @@ bool MainWindow::sellItem(QComboBox* combo, QString transactionID, int quanity) 
     return true;
 }
 
+double MainWindow::calcTotalPrice()
+{
+    double totalPrice = 0;
+
+    totalPrice += calcItem(ui->combo1, ui->p1Quanity);
+    totalPrice += calcItem(ui->combo2, ui->p2Quanity);
+    totalPrice += calcItem(ui->combo3, ui->p3Quanity);
+    totalPrice += calcItem(ui->combo4, ui->p4Quanity);
+    totalPrice += calcItem(ui->combo5, ui->p5Quanity);
+
+    return totalPrice;
+}
+
+double MainWindow::calcItem(QComboBox* combo, QSpinBox* spinBox)
+{
+    combo->setModelColumn(1);
+    double price = combo->currentText().toDouble() * spinBox->value();
+    combo->setModelColumn(2);
+
+    return price;
+}
+
 void MainWindow::on_FormTabs_tabBarClicked(int index)
 {
     switch(index) {
@@ -343,4 +324,10 @@ void MainWindow::setupComboBoxes()
     ui->combo4->setModelColumn(2);
     ui->combo5->setModel(model);
     ui->combo5->setModelColumn(2);
+}
+
+void MainWindow::on_totalPriceButton_clicked()
+{
+    QString text = QString::number(calcTotalPrice());
+    ui->totalPriceEdit->setText(text);
 }

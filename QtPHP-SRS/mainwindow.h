@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QComboBox>
+#include <QSpinBox>
 
 #include "phpsrs.h"
 
@@ -24,6 +25,8 @@ public:
     void searchIndiviualItemSales();
 
     bool sellItem(QComboBox* combo, QString transactionID, int quanity);
+    double calcTotalPrice();
+    double calcItem(QComboBox* combo, QSpinBox* spinBox);
 
     void setupComboBoxes();
 
@@ -40,6 +43,8 @@ private slots:
     void on_recordSaleButton_clicked();
 
     void on_FormTabs_tabBarClicked(int index);
+
+    void on_totalPriceButton_clicked();
 
 private:
     Ui::MainWindow *ui;
