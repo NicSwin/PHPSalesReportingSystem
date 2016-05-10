@@ -33,6 +33,7 @@ bool MainWindow::connect(QString url, QString user, QString password, QString da
     //searchSaleReceipt();
     //searchIndiviualItemSales();
     searchProduct();
+    setupComboBoxes();
 
     return temp;
 }
@@ -168,18 +169,79 @@ void MainWindow::on_addProductButton_clicked()
 
 void MainWindow::on_recordSaleButton_clicked()
 {
-    QSqlDatabase defaultDB = QSqlDatabase::database();
+    QString totalPrice = ui->totalPriceEdit->text();
+    if(totalPrice == "") {
+        QMessageBox msgBox;
+        msgBox.setText("You need to enter a total price.");
+        msgBox.exec();
+        return;
+    }
 
+    QSqlDatabase defaultDB = QSqlDatabase::database();
     QSqlQuery insertSale(defaultDB);
 
     insertSale.prepare("INSERT INTO sales_record (SalePrice) VALUES (?);");
-    insertSale.addBindValue(ui->totalPriceEdit->text());
+    insertSale.addBindValue(totalPrice);
     insertSale.exec();
 
     QString transactionID = insertSale.lastInsertId().toString();
+
     bool soldOne = false;
 
-    if(ui->IDp1->text() != "") {
+    int p1quanity = ui->p1Quanity->value();
+    int p2quanity = ui->p2Quanity->value();
+    int p3quanity = ui->p3Quanity->value();
+    int p4quanity = ui->p4Quanity->value();
+    int p5quanity = ui->p5Quanity->value();
+
+    if(p1quanity > 0) {
+        sellItem(ui->combo1, transactionID, p1quanity);
+        soldOne = true;
+    }
+    if(p2quanity > 0) {
+        sellItem(ui->combo2, transactionID, p2quanity);
+        soldOne = true;
+    }
+    if(p3quanity > 0) {
+        sellItem(ui->combo3, transactionID, p3quanity);
+        soldOne = true;
+    }
+    if(p4quanity > 0) {
+        sellItem(ui->combo4, transactionID, p4quanity);
+        soldOne = true;
+    }
+    if(p5quanity > 0) {
+        sellItem(ui->combo5, transactionID, p5quanity);
+        soldOne = true;
+    }
+
+    if(soldOne) {
+        QMessageBox msgBox;
+        QString msg = "Sale recorded! ID: " + transactionID;
+        msgBox.setText(msg);
+        msgBox.exec();
+
+        ui->p1Quanity->setValue(0);
+        ui->p2Quanity->setValue(0);
+        ui->p3Quanity->setValue(0);
+        ui->p4Quanity->setValue(0);
+        ui->p5Quanity->setValue(0);
+
+        ui->combo1->setCurrentIndex(0);
+        ui->combo2->setCurrentIndex(0);
+        ui->combo3->setCurrentIndex(0);
+        ui->combo4->setCurrentIndex(0);
+        ui->combo5->setCurrentIndex(0);
+
+        ui->totalPriceEdit->setText("");
+    }
+    else {
+        QMessageBox msgBox;
+        msgBox.setText("You need to enter at least 1 product to make a sale.");
+        msgBox.exec();
+    }
+
+    /*if(ui->IDp1->text() != "") {
         sellItem(ui->IDp1->text(), ui->p1Quanity->value(), transactionID);
         soldOne = true;
     }
@@ -206,7 +268,7 @@ void MainWindow::on_recordSaleButton_clicked()
         msgBox.setText(msg);
         msgBox.exec();
 
-        ui->IDp1->setText("");
+        //ui->IDp1->setText("");
         ui->IDp2->setText("");
         ui->IDp3->setText("");
         ui->IDp4->setText("");
@@ -224,11 +286,17 @@ void MainWindow::on_recordSaleButton_clicked()
         msgBox.setText("You need to enter at least 1 product to make a sale.");
         msgBox.exec();
     }
+    */
 
 }
 
-bool MainWindow::sellItem(QString itemID, int itemQuanity, QString transactionID) {
-    // Item 1
+bool MainWindow::sellItem(QComboBox* combo, QString transactionID, int quanity) {
+
+    combo->setModelColumn(0);
+    QString itemID = combo->currentText();
+    int itemQuanity = quanity;
+    combo->setModelColumn(2);
+
     QSqlDatabase defaultDB = QSqlDatabase::database();
     QSqlQuery item1(defaultDB);
     item1.prepare("INSERT INTO individual_sale (SaleID, ProductID, Quanity) VALUES (?, ?, ?);"
@@ -247,4 +315,32 @@ bool MainWindow::sellItem(QString itemID, int itemQuanity, QString transactionID
     }
 
     return true;
+}
+
+void MainWindow::on_FormTabs_tabBarClicked(int index)
+{
+    switch(index) {
+    case 0:
+        setupComboBoxes();
+        break;
+    default:
+        break;
+    }
+}
+
+void MainWindow::setupComboBoxes()
+{
+    QSqlQueryModel *model = new QSqlQueryModel (ui->combo1);
+    model->setQuery ("SELECT ProductID, Price, CONCAT(ProductID, '. ', Name, ' $', Price) FROM `php-srs`.products ORDER BY ProductID;");
+
+    ui->combo1->setModel(model);
+    ui->combo1->setModelColumn(2);
+    ui->combo2->setModel(model);
+    ui->combo2->setModelColumn(2);
+    ui->combo3->setModel(model);
+    ui->combo3->setModelColumn(2);
+    ui->combo4->setModel(model);
+    ui->combo4->setModelColumn(2);
+    ui->combo5->setModel(model);
+    ui->combo5->setModelColumn(2);
 }

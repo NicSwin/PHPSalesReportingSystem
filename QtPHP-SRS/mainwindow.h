@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QComboBox>
 
 #include "phpsrs.h"
 
@@ -22,7 +23,10 @@ public:
     void searchSaleReceipt();
     void searchIndiviualItemSales();
 
-    bool sellItem(QString itemID, int itemQuanity, QString transactionID);
+    bool sellItem(QComboBox* combo, QString transactionID, int quanity);
+
+    void setupComboBoxes();
+
 private slots:
     void on_searchProductButton_clicked();
 
@@ -34,6 +38,8 @@ private slots:
 
     void on_addProductButton_clicked();
     void on_recordSaleButton_clicked();
+
+    void on_FormTabs_tabBarClicked(int index);
 
 private:
     Ui::MainWindow *ui;

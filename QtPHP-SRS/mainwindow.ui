@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="mainTabs">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -210,9 +210,6 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="1">
-               <widget class="QLineEdit" name="IDp1"/>
-              </item>
               <item row="3" column="0">
                <widget class="QSpinBox" name="p2Quanity"/>
               </item>
@@ -225,17 +222,20 @@
               <item row="6" column="0">
                <widget class="QSpinBox" name="p5Quanity"/>
               </item>
+              <item row="2" column="1">
+               <widget class="QComboBox" name="combo1"/>
+              </item>
               <item row="3" column="1">
-               <widget class="QLineEdit" name="IDp2"/>
+               <widget class="QComboBox" name="combo2"/>
               </item>
               <item row="4" column="1">
-               <widget class="QLineEdit" name="IDp3"/>
+               <widget class="QComboBox" name="combo3"/>
               </item>
               <item row="5" column="1">
-               <widget class="QLineEdit" name="IDp4"/>
+               <widget class="QComboBox" name="combo4"/>
               </item>
               <item row="6" column="1">
-               <widget class="QLineEdit" name="IDp5"/>
+               <widget class="QComboBox" name="combo5"/>
               </item>
              </layout>
             </item>
