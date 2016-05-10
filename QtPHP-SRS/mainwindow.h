@@ -46,6 +46,8 @@ private slots:
 
     void on_totalPriceButton_clicked();
 
+    void on_alterProductButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     PhpSrs* phpsrs;

@@ -273,6 +273,8 @@ bool MainWindow::sellItem(QComboBox* combo, QString transactionID, int quanity) 
         return false;
     }
 
+    setupComboBoxes();
+
     return true;
 }
 
@@ -312,7 +314,7 @@ void MainWindow::on_FormTabs_tabBarClicked(int index)
 void MainWindow::setupComboBoxes()
 {
     QSqlQueryModel *model = new QSqlQueryModel (ui->combo1);
-    model->setQuery ("SELECT ProductID, Price, CONCAT(ProductID, '. ', Name, ' $', Price) FROM `php-srs`.products ORDER BY ProductID;");
+    model->setQuery ("SELECT ProductID, Price, CONCAT(ProductID, '. ', Name, ' $', Price), Stock FROM `php-srs`.products ORDER BY ProductID;");
 
     ui->combo1->setModel(model);
     ui->combo1->setModelColumn(2);
@@ -324,10 +326,59 @@ void MainWindow::setupComboBoxes()
     ui->combo4->setModelColumn(2);
     ui->combo5->setModel(model);
     ui->combo5->setModelColumn(2);
+
+    QSqlQueryModel *model2 = new QSqlQueryModel (ui->productAlterCombo);
+    model2->setQuery ("SELECT ProductID, Price, CONCAT(ProductID, '. ', Name, ' $', Price, ' Stock: ', Stock), Stock FROM `php-srs`.products ORDER BY ProductID;");
+
+    ui->productAlterCombo->setModel(model2);
+    ui->productAlterCombo->setModelColumn(2);
 }
 
 void MainWindow::on_totalPriceButton_clicked()
 {
     QString text = QString::number(calcTotalPrice());
     ui->totalPriceEdit->setText(text);
+}
+
+void MainWindow::on_alterProductButton_clicked()
+{
+    ui->productAlterCombo->setModelColumn(0);
+    QString ID = ui->productAlterCombo->currentText();
+    ui->productAlterCombo->setModelColumn(2);
+
+    QString newName = ui->newNameEdit->text();
+    QString newPrice = ui->newPriceEdit->text();
+    QString newStock = ui->newStockEdit->text();
+
+    if(newName == "") {
+
+    }
+
+    QSqlDatabase defaultDB = QSqlDatabase::database();
+    QSqlQuery item1(defaultDB);
+
+    item1.prepare("UPDATE products SET Name = ?, Price = ?, Stock = ? WHERE ProductID = ?;");
+    item1.addBindValue(newName);
+    item1.addBindValue(newPrice);
+    item1.addBindValue(newStock);
+    item1.addBindValue(ID);
+
+    if( item1.exec() ) {
+        ui->newNameEdit->setText("");
+        ui->newPriceEdit->setText("");
+        ui->newStockEdit->setText("");
+
+        ui->productAlterCombo->setCurrentIndex(0);
+
+        QMessageBox msgBox;
+        msgBox.setText("Altered product!");
+        msgBox.exec();
+
+        setupComboBoxes();
+    }
+    else {
+        QMessageBox msgBox;
+        msgBox.setText("Error!\n" + item1.lastError().text());
+        msgBox.exec();
+    }
 }

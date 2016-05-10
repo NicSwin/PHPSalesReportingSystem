@@ -184,7 +184,7 @@
         <item>
          <widget class="QTabWidget" name="FormTabs">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab_6">
            <attribute name="title">
@@ -348,6 +348,60 @@
              </item>
             </layout>
            </widget>
+          </widget>
+          <widget class="QWidget" name="tab_8">
+           <attribute name="title">
+            <string>Alter product</string>
+           </attribute>
+           <layout class="QFormLayout" name="formLayout_2">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Product Name</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="productAlterCombo"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>New Name</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>New Stock</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>New Price</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="newNameEdit"/>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="newStockEdit"/>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="newPriceEdit"/>
+            </item>
+            <item row="4" column="1">
+             <widget class="QPushButton" name="alterProductButton">
+              <property name="text">
+               <string>Alter product</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </widget>
         </item>
